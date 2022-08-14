@@ -16,11 +16,6 @@ Discord bot for fetching Old School Runescape data based on a variety of command
             "DiscordBotToken": "TOKEN_HERE"
         }
         ```
-4. (Optional but suggested) Add all of the [Skill Emojis](https://github.com/GregoryLeeWhite/discord-osrs-bot/tree/master/DiscordEmojis/Skills) to your discord server.
-    - Download all of the [Skill Emojis](https://github.com/GregoryLeeWhite/discord-osrs-bot/tree/master/DiscordEmojis/Skills).
-    - In your discord server navigate to `Server Settings > Emoji`.
-    - Click `Upload Emoji` and upload all of the images in the [Skills](https://github.com/GregoryLeeWhite/discord-osrs-bot/tree/master/DiscordEmojis/Skills) directory.
-        - The names should autopopulate based on the file names (do not change these).
 
 # Running the application
 After finishing the setup section, there are a couple of options for running the application.
@@ -42,7 +37,8 @@ After finishing the setup section, there are a couple of options for running the
 # Current List of Commands
 - `!hiscores PlayerName`
     - This command will return all of a players levels, ranks, and XP for each level.
-    
+    ![image](https://user-images.githubusercontent.com/7416103/184512186-f77c76ab-b711-400b-982d-80a5b7904dc9.png)
+
 
 
 
