@@ -5,5 +5,6 @@ public enum HiScoreTypeEnum
     Overall,
     Skill,
     Activity,
-    Boss
+    Boss,
+    GroupIronman
 }
