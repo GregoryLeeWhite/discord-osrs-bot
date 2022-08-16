@@ -27,7 +27,6 @@ public class PublicModule : ModuleBase<SocketCommandContext>
     [Command("hiscores")]
     public async Task GetHiScoresByUsernameAsync([Remainder] string username)
     {
-        // Get a stream containing an image of a cat
         var result = await _hiScoreService.GetHiScoresByUsernameAsync(username.Trim(), CancellationToken.None);
 
         if (result.IsFailure)
@@ -39,6 +38,24 @@ public class PublicModule : ModuleBase<SocketCommandContext>
         }
 
         var message = HiScoreMessageBuilder.BuildHiScoreEmbed(result.Value, username, GetEmoteByName);
+
+        await ReplyAsync(embed: message);
+    }
+
+    [Command("GIMHiscores")]
+    public async Task GetGroupIronmanHiScoresByGroupNameAsync([Remainder] string groupName)
+    {
+        var result = await _hiScoreService.GetGroupIronmanHiScoresByGroupNameAsync(groupName.Trim(), CancellationToken.None);
+
+        if (result.IsFailure)
+        {
+            var errorMessage = OsrsFailureMessageBuilder.BuildOsrsApiErrorMessage(result.Error);
+            await ReplyAsync(errorMessage);
+
+            return;
+        }
+
+        var message = HiScoreMessageBuilder.BuildGroupIronmanHiScoreEmbed(result.Value, GetEmoteByName);
 
         await ReplyAsync(embed: message);
     }

@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using HtmlAgilityPack;
 using OSRS.Bot.Application.Dtos;
 using OSRS.Bot.Application.Enums;
 using OSRS.Bot.Application.Interfaces.Services;
@@ -9,6 +10,8 @@ namespace OSRS.Bot.Application.Services;
 public class HiScoreService : IHiScoreService
 {
     private readonly IRunescapeHttpRepository _runescapeHttpRepository;
+
+    private const string GroupIronmanNotFoundMessage = "Could not find the group";
 
     public HiScoreService(IRunescapeHttpRepository runescapeHttpRepository)
     {
@@ -46,5 +49,34 @@ public class HiScoreService : IHiScoreService
         }
 
         return Result.Success(playerHiScoreDto);
+    }
+
+    public async Task<Result<GroupIronmanHiScoreDto>> GetGroupIronmanHiScoresByGroupNameAsync(string groupName, CancellationToken ct)
+    {
+        var hiScoresResult = await _runescapeHttpRepository.GetGroupIronmanHiscoresByGroupNameAsync(groupName, ct);
+
+        if (hiScoresResult.IsFailure)
+            return Result.Failure<GroupIronmanHiScoreDto>(hiScoresResult.Error);
+
+        var htmlResponse = new HtmlDocument();
+        htmlResponse.LoadHtml(hiScoresResult.Value);
+
+        if (htmlResponse.DocumentNode.InnerHtml.Contains(GroupIronmanNotFoundMessage))
+            return Result.Failure<GroupIronmanHiScoreDto>(GroupIronmanNotFoundMessage);
+
+        var htmlNodeWithGroupName = htmlResponse.DocumentNode.SelectNodes("//a[@class='uc-scroll__link']")
+        .SingleOrDefault(p => p.InnerText == groupName);
+
+        if (htmlNodeWithGroupName == null)
+            return Result.Failure<GroupIronmanHiScoreDto>("Unable to locate group in the response from OSRS.");
+
+        var parentNode = htmlNodeWithGroupName.ParentNode;
+
+        var isPrestige = parentNode.InnerHtml.Contains("prestige-icon");
+        var rank = parentNode.PreviousSibling.PreviousSibling.InnerText.Trim();
+        var level = parentNode.NextSibling.NextSibling.InnerText.Trim().Replace("\\n", string.Empty);
+        var xp = parentNode.NextSibling.NextSibling.NextSibling.NextSibling.InnerText.Trim();
+
+        return Result.Success(new GroupIronmanHiScoreDto(groupName, HiScoreTypeEnum.GroupIronman, rank, level, xp, isPrestige));
     }
 }

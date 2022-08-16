@@ -13,7 +13,6 @@ internal static class HiScoreMessageBuilder
         var embed = new EmbedBuilder();
         embed.Title = $"{$"<:{hiScoresEmote.Name}:{hiScoresEmote.Id}>"} **{username}**";
         
-
         foreach (var hiScore in playerHiScoreDto.HiScores)
         {
             var emote = getEmoteByName(hiScore.HiScoreName);
@@ -25,6 +24,26 @@ internal static class HiScoreMessageBuilder
             if (hiScore.HiScoreType == HiScoreTypeEnum.Skill || hiScore.HiScoreType == HiScoreTypeEnum.Overall)
                 embed.AddField($"<:{emote.Name}:{emote.Id}> **{level}**", $"#{rank}, {xp} XP", true);
         }
+
+        var richEmbed = embed.Build();
+
+        return richEmbed;
+    }
+
+    internal static Embed BuildGroupIronmanHiScoreEmbed(GroupIronmanHiScoreDto groupIronmanHiScoreDto, Func<string, GuildEmote?> getEmoteByName)
+    {
+        var embed = new EmbedBuilder();
+        embed.Title = groupIronmanHiScoreDto.IsPrestige 
+            ? $"\u2B50 **{groupIronmanHiScoreDto.GroupName}**" 
+            : $"**{groupIronmanHiScoreDto.GroupName}**";
+
+        var emote = getEmoteByName(groupIronmanHiScoreDto.HiScoreName);
+
+        var level = groupIronmanHiScoreDto.Level == "1" ? "?" : groupIronmanHiScoreDto.Level;
+        var rank = groupIronmanHiScoreDto.Rank == "-1" ? "Unranked" : groupIronmanHiScoreDto.Rank;
+        var xp = groupIronmanHiScoreDto.XP == "-1" ? "Unknown" : groupIronmanHiScoreDto.XP;
+
+        embed.AddField($"<:{emote.Name}:{emote.Id}> **{level}**", $"#{rank}, {xp} XP", true);
 
         var richEmbed = embed.Build();
 
