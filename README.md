@@ -38,6 +38,8 @@ After finishing the setup section, there are a couple of options for running the
 - `!hiscores PlayerName`
     - This command will return all of a players levels, ranks, and XP for each level.
     ![image](https://user-images.githubusercontent.com/7416103/184512186-f77c76ab-b711-400b-982d-80a5b7904dc9.png)
+- `!GIMHiscores GroupName`
+    - Returns a group's rank, level, and contributed XP.  If a star emoji is shown, the group is Group Prestiged.
 
 
 
