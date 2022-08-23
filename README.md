@@ -45,6 +45,8 @@ After finishing the setup section, there are a couple of options for running the
     ![image](https://user-images.githubusercontent.com/7416103/184512186-f77c76ab-b711-400b-982d-80a5b7904dc9.png)
 - `!GIMHiscores GroupName`
     - Returns a group's rank, level, and contributed XP.  If a star emoji is shown, the group is Group Prestiged.
+    ![image](https://user-images.githubusercontent.com/7416103/184793410-834bc730-cf36-494f-bd2f-d497c3a43068.png)
+
 
 
 
