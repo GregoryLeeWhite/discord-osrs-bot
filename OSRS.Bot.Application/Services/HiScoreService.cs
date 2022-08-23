@@ -65,7 +65,7 @@ public class HiScoreService : IHiScoreService
             return Result.Failure<GroupIronmanHiScoreDto>(GroupIronmanNotFoundMessage);
 
         var htmlNodeWithGroupName = htmlResponse.DocumentNode.SelectNodes("//a[@class='uc-scroll__link']")
-        .SingleOrDefault(p => p.InnerText == groupName);
+        .SingleOrDefault(p => p.InnerText.Equals(groupName, StringComparison.InvariantCultureIgnoreCase));
 
         if (htmlNodeWithGroupName == null)
             return Result.Failure<GroupIronmanHiScoreDto>("Unable to locate group in the response from OSRS.");
